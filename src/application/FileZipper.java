@@ -1,5 +1,7 @@
 package application;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,7 +12,8 @@ import java.util.zip.ZipOutputStream;
 public class FileZipper {
 
     public void zipFile(String sourceFile) throws IOException {
-        FileOutputStream fos = new FileOutputStream("compressed.zip");
+        String newName = FilenameUtils.removeExtension(sourceFile);
+        FileOutputStream fos = new FileOutputStream(newName+" compressed.zip");
         ZipOutputStream zipOut = new ZipOutputStream(fos);
         File fileToZip = new File(sourceFile);
         FileInputStream fis = new FileInputStream(fileToZip);

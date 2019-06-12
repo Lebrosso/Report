@@ -12,6 +12,8 @@ public class DbConnector {
     private static Connection conn;
     public static DbConnector instance = null;
     private static BasicDataSource ds = new BasicDataSource();
+    private static String SQLCONECTIONGIS = "jdbc:postgresql://localhost:5432/tax_gis";
+
 
     private DbConnector() {
     }
@@ -23,7 +25,7 @@ public class DbConnector {
     public static DbConnector getInstance() throws SQLException {
         if (instance == null) {
 
-            ds.setUrl("jdbc:postgresql://localhost:5432/tax_gis");
+            ds.setUrl(SQLCONECTIONGIS);
             ds.setUsername("postgres");
             ds.setPassword("admin");
             ds.setMinIdle(5);
@@ -457,8 +459,6 @@ public class DbConnector {
         query.append(table.getName());
         query.append(" where ");
         query.append(" datobs <= ? ");
-        query.append(" AND ");
-        query.append(" datobs >= ? ");
 
         PreparedStatement st = conn.prepareStatement(query.toString());
         ResultDto dto = new ResultDto();
@@ -476,35 +476,13 @@ public class DbConnector {
             e.printStackTrace();
         }
 
-        StringBuffer tableMonitoring = new StringBuffer();
-        tableMonitoring.append(table);
-        tableMonitoring.append("__m");
-
-        StringBuffer queryMonitoring = new StringBuffer();
-        queryMonitoring.append(" SELECT count(*) from ");
-        queryMonitoring.append(tableMonitoring.toString());
-        queryMonitoring.append(" where ");
-        queryMonitoring.append(" ST_Intersects (geom,(select st_union(geom) from les_pol where adr_les LIKE ?)) ");
-        queryMonitoring.append(" AND ");
-        queryMonitoring.append(" datobs <= ? ");
-
-        try {
-            st.setDate(1, dateFrom);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                dto.setMonitoring(rs.getString("count"));
-                results.add(dto);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         st.close();
         conn.close();
         return results;
     }
+
+
 }
 
 

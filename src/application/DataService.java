@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DataService {
 
-    DbConnector conn;
+    private DbConnector conn;
 
     {
         try {
@@ -17,7 +17,7 @@ public class DataService {
         }
     }
 
-    public List getCount(Date dateTo, Date dateFrom, String voivodeship, String county, int userId, Table table) {
+    public List<ResultDto> getCount(Date dateTo, Date dateFrom, String voivodeship, String county, int userId, Table table) {
         try {
             return conn.getCount(dateTo, dateFrom, voivodeship, county, userId, table);
         } catch (SQLException e) {

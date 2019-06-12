@@ -9,12 +9,15 @@ import model.GeneralDataDto;
 import model.ResultDto;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class ReportGenerator {
 
     private String fileLocation = "";
+    private Date generated = new Date();
+    String timeGenerated =new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(generated);
 
     public String generate(List<ResultDto> records, GeneralDataDto dto) {
 
@@ -34,7 +37,7 @@ public class ReportGenerator {
             excelSheet.addCell(top);
             top = new Label(10, 4, "Adres:");
             excelSheet.addCell(top);
-            top = new Label(10, 5, "Wygenerowano:");
+            top = new Label(10, 5, "Wygenerowano: " + timeGenerated);
             excelSheet.addCell(top);
 
             Label label1 = new Label(0, 6, "lp.");
